@@ -1,7 +1,51 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+
+from app.db import User, create_db_and_tables
+from app.schemas import UserCreate, UserRead, UserUpdate
+from app.users import auth_backend, fastapi_users, google_oauth_client, current_active_user
+
+from app.config import APP_SECRET
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# Login/logout
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend), 
+    prefix="/auth/jwt", 
+    tags=["auth"]
+)
+
+# Register
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+# Get/update users
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+# Google oauth2
+app.include_router(
+    fastapi_users.get_oauth_router(
+        google_oauth_client,
+        auth_backend,
+        APP_SECRET,
+        associate_by_email=True,
+    ),
+    prefix="/auth/google",
+    tags=["auth"],
+)
+
+# Example of a route requiring auth
+@app.get("/authenticated-route")
+async def authenticated_route(user: User = Depends(current_active_user)):
+    return {"message": f"Hello {user.email}!"}
+
+@app.on_event("startup")
+async def on_startup():
+    await create_db_and_tables()
