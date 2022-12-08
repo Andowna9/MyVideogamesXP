@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb
+    environment:
+      - MARIADB_DATABASE=users
+      - MARIADB_USER=jonan
+      - MARIADB_PASSWORD=test
+      - MARIADB_ROOT_PASSWORD=p132
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pp132"] # Check if database is healthy
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=videogames_lists
+
+  users-api:
+    build: ./users-backend
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  videogames-api:
+    build: ./videogames-backend
+    depends_on:
+      - mongo
+
+  gateway:
+    build: ./gateway
+    ports:
+      - 80:80
+    depends_on:
+      - users-api
+      - videogames-api
+
+  web:
+    build: ./frontend
+    ports:
+      - 3000:3000
+
+
+networks:
+  myvideogamesxp:
