@@ -11,6 +11,8 @@ sizes = {
 }
 const processCover = (games, size) => {
     games.forEach(game => {
+        if (!game['cover']) return;
+        
         const hash = game['cover'].image_id;
         delete game['cover'];
         game['cover_image'] = `https://images.igdb.com/igdb/image/upload/t_${size}/${hash}.jpg`;
@@ -18,15 +20,17 @@ const processCover = (games, size) => {
 }
 
 // Search 
-router.get('/', async (req, res) => {
-    const searchText = req.query.search;
+router.post('/search', async (req, res, next) => {
+    const searchText = req.body.search;
+    if (!searchText) return res.sendStatus(400);
+    
     try {
         const apiResponse = await apiClient.search(searchText)
             .fields(['id', 'name', 'cover.image_id'])
             .limit(10)
             .request('/games');
 
-        processCover(apiResponse.data, sizes.small);
+        processCover(apiResponse.data, sizes.big);
         res.send(apiResponse.data);
     }
     catch(error) {
@@ -36,7 +40,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get specific videogame
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
         const apiResponse = await apiClient
@@ -46,7 +50,7 @@ router.get('/:id', async (req, res) => {
             .request('/games');
 
         processCover(apiResponse.data, sizes.big);
-        res.send(apiResponse.data);
+        res.send(apiResponse.data[0]);
     }
     catch(error) {
         next(error);

@@ -22,6 +22,11 @@ mongoose.connect(mongodb_uri)
 app.use(cookieParser())
 app.use(express.json())
 
+const errorLogger = (error, req, res, next) => {
+  console.log(error.stack);
+  next(error);
+}
+
 const errorHandler = (error, req, res, next) => {
   // Mongoose validation error
   if (error.name === "ValidationError") {
@@ -34,10 +39,16 @@ const errorHandler = (error, req, res, next) => {
     }
 
   res.status(500).send("Something went wrong");
+  next(error);
 };
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: `unknown endpoint: ${req.url}` });
+};
+
+// TODO Handle not allowed methods
+const methodNotAllowed = (req, res) => {
+  res.status(405).send('Method not allowed');
 };
 
 // Routers
@@ -45,6 +56,7 @@ app.use('/igdb', videogamesRouter);
 app.use('/lists', listsRouter);
 
 // Error handlers
+app.use(errorLogger);
 app.use(errorHandler);
 app.use(unknownEndpoint);
 
