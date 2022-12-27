@@ -1,16 +1,11 @@
 import {
 Flex,
 Box,
-Text,
-useDisclosure
+Text
 } from '@chakra-ui/react';
 import GameItem from './GameItem';
-import EditItemModal from './EditItemModal';
-import DeleteItemDialog from './DeleteItemDialog';
 
-const GameList = () => {
-    const editModal = useDisclosure();
-    const deleteAlert = useDisclosure();
+const GameList = ({ games, editGameItem, removeGameItem }) => {
 
     return (
         <Box padding={8} boxShadow='lg'>
@@ -42,11 +37,21 @@ const GameList = () => {
                 </Box>
             </Flex>
             <Box>
-                <GameItem title='The Legend of Zelda: Breath of the Wild' progress={50} onEdit={editModal.onOpen} onDelete={deleteAlert.onOpen} />
-                <GameItem title='Super Mario Bos' progress={80} onEdit={editModal.onOpen} onDelete={deleteAlert.onOpen} />
+                { 
+                    games && games.map((game, index) => {
+                        return <GameItem 
+                                key={index} 
+                                id={game._id}
+                                igdbId={game.igdb_id}
+                                status={game.status}
+                                progress={game.progress}
+                                score={game.score}
+                                onEdit={(data) => editGameItem(game._id, data)}
+                                onDelete={() => removeGameItem(game._id)}
+                                />
+                    }) 
+                }
             </Box>
-            <EditItemModal isOpen={editModal.isOpen} onClose={editModal.onClose} />
-            <DeleteItemDialog isOpen={deleteAlert.isOpen} onClose={deleteAlert.onClose} />
         </Box>
     );
 

@@ -1,41 +1,15 @@
-const { app_secret } = require('../config');
 const express = require('express');
-const jwt = require('jsonwebtoken');
 
-const List = require('../models/list');
 const Videogame = require('../models/videogame');
+
+const authMiddleware = require('../middleware/authMiddleware');
+const listMiddleware = require('../middleware/listMiddleware');
 
 const router = express.Router();
 
-// User authentication middleware
-router.use((req, res, next) => {
-    const authToken = req.cookies['session'];
-    if (authToken == null) return res.sendStatus(401);
 
-    jwt.verify(authToken, app_secret, (err, decoded) => {
-        if (err) {
-            console.log(err);
-            return res.sendStatus(403);
-        }
-        req.user = decoded['user_id'];
-        next();
-    });
-});
-
-// List retrieval middleware
-router.use(async (req, res, next) => {
-    let userList = await List.findOne({ owner_id: req.user });
-    if (userList == null) {
-        const list = new List({
-            owner_id: req.user,
-            videogames: []
-        });
-        userList = await list.save();
-    }
-
-    req.userList = userList;
-    next();
-});
+router.use(authMiddleware({allowUnauthenticated: false}))
+router.use(listMiddleware());
 
 // Get games
 router.get('/my-games/', async (req, res, next) => {
@@ -47,6 +21,12 @@ router.get('/my-games/', async (req, res, next) => {
 router.post('/my-games/', async (req, res, next) => {
     const body = req.body;
     const userList = req.userList;
+
+    // Check if it was already added
+    if (userList.videogames.find((videogame) => videogame.igdb_id == body.igdb_id)) {
+        return res.sendStatus(409);
+    }
+
     try {
         const videogame = new Videogame({
             igdb_id: body.igdb_id,
@@ -82,7 +62,7 @@ router.delete('/my-games/:id', async (req, res, next) => {
 });
 
 // Update specific videogame
-router.put('/my-games/:id', async (req, res) => {
+router.put('/my-games/:id', async (req, res, next) => {
     const body = req.body;
     const userList = req.userList;
     try {

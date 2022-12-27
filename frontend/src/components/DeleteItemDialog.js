@@ -9,7 +9,7 @@ Button
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-const DeleteItemDialog = ({ isOpen, onClose }) => {
+const DeleteItemDialog = ({ isOpen, onAction, onClose }) => {
     const cancelRef = useRef();
 
     return (
@@ -34,7 +34,15 @@ const DeleteItemDialog = ({ isOpen, onClose }) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme='red' onClick={onClose} ml={3}>
+              <Button 
+              colorScheme='red' 
+              onClick={() => {
+                if (onAction) {
+                  onAction();
+                  onClose();
+                }
+              }} 
+              ml={3}>
                 Remove
               </Button>
             </AlertDialogFooter>

@@ -7,13 +7,17 @@ Stack,
 Wrap,
 WrapItem,
 Button,
-Flex
+Flex,
+useDisclosure
 }
 from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link as ReactLink } from 'react-router-dom';
 import axios from '../api/axiosInstance';
 import GameCover from '../components/GameCover';
+import ItemModal from '../components/ItemModal';
+import { useUserContext } from '../context/UserContext';
 
 const ListJoinText = ({ list, name, field }) => {
     if (list) {
@@ -32,8 +36,28 @@ const ListJoinText = ({ list, name, field }) => {
 
 const GameDetail = () => {
     const { id } = useParams();
+    const { user } = useUserContext();
+
     const [game, setGame] = useState();
     const [isLoading, setLoading] = useState(true);
+    const addModal = useDisclosure();
+
+    let button;
+    if (game && game.inList) {
+        button =(<Button
+                    as={ReactLink}
+                    to='/my-list'
+                    colorScheme='green'>
+                        Check on list
+                </Button>);
+    }
+    else {
+        button =(<Button 
+                    colorScheme='blue'
+                    onClick={addModal.onOpen}>
+                        Add to list
+                </Button>);
+    }
 
     useEffect(() => {
         axios.get(`/videogames/igdb/${id}`)
@@ -69,9 +93,7 @@ const GameDetail = () => {
                         <GameCover
                         src={game.cover_image}
                         alt={game.name}/>
-                        <Button colorScheme='blue'>
-                            Add to list
-                        </Button>
+                        { user && button}
                     </Stack>
                 </WrapItem>
                 <WrapItem w='800px'>
@@ -91,6 +113,23 @@ const GameDetail = () => {
                     </Stack>
                 </WrapItem>
             </Wrap>
+            <ItemModal 
+            headerTitle='Add Game Item' 
+            actionName='Add'
+            idField={{igdb_id: game.id}}
+            onAction={(data) => {
+                console.log(data);
+                axios.post('/videogames/lists/my-games', data)
+                .then((result) => {
+                    setGame({...game, inList: true});
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            }}
+            isOpen={addModal.isOpen} 
+            onClose={addModal.onClose} 
+            />
         </Box>
     );
 };

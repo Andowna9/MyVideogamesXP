@@ -22,6 +22,12 @@ const GameSearch = () => {
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
+      if (!search) {
+        setLoading(false);
+        setGames([]);
+        return;
+      }
+
       let ignore = false;
       setLoading(true);
       axios.post('/videogames/igdb/search', {
@@ -71,7 +77,7 @@ const GameSearch = () => {
               isIndeterminate 
               color='blue.500' />
            </Flex>
-          :<SimpleGrid minChildWidth='300px' spacing={4}>
+          :<SimpleGrid columns={{sm: 2, md: 3, xl: 5}} spacing={4}>
             {
               games.map((game) => {
                 return (

@@ -2,6 +2,9 @@ const express = require('express');
 const { client_id, api_token } = require('../config');
 const igdb = require('igdb-api-node').default;
 
+const authMiddleware = require('../middleware/authMiddleware');
+const listMiddleware = require('../middleware/listMiddleware');
+
 const apiClient = igdb(client_id, api_token);
 const router = express.Router();
 
@@ -40,8 +43,9 @@ router.post('/search', async (req, res, next) => {
 });
 
 // Get specific videogame
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', authMiddleware({allowUnauthenticated: true}), listMiddleware(), async (req, res, next) => {
     const id = req.params.id;
+    const userList = req.userList;
     try {
         const apiResponse = await apiClient
             .fields(['id', 'name', 'first_release_date', 'genres.name', 
@@ -50,7 +54,15 @@ router.get('/:id', async (req, res, next) => {
             .request('/games');
 
         processCover(apiResponse.data, sizes.big);
-        res.send(apiResponse.data[0]);
+
+        const data = apiResponse.data[0];
+        data['inList'] = false;
+        if (userList != null) {
+            if (userList.videogames.find((videogame) => videogame.igdb_id == data.id)) {
+                data['inList'] = true;
+            }
+        } 
+        res.send(data);
     }
     catch(error) {
         next(error);

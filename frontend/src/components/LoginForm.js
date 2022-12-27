@@ -1,10 +1,12 @@
 import { Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, Link, useToast } from '@chakra-ui/react';
 import {Field, Form, Formik} from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/UserContext';
 import axios from '../api/axiosInstance';
 
 const LoginForm = () => {
     const toast = useToast();
+    const { setUser } = useUserContext();
     const navigate = useNavigate();
 
     return (
@@ -28,19 +30,22 @@ const LoginForm = () => {
 
             return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting }) => {
             const formData = new FormData();
             formData.set('username', values.email);
             formData.set('password', values.password);
+            try {
+                await axios.post('/accounts/auth/jwt/login', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
 
-            axios.post('/accounts/auth/jwt/login', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then((result) => {
+                const result = axios.get('/accounts/users/me');
+                setUser(result.data);
                 navigate('/my-list');
-            }).catch((error) => {
+            }
+            catch(error) {
                 console.log(error.response);
                 let errorMessage = error.response.data.detail;
                 if (errorMessage === 'LOGIN_BAD_CREDENTIALS') {
@@ -53,10 +58,11 @@ const LoginForm = () => {
                     duration: 9000,
                     isClosable: true,
                 });
-            })
-            .finally(() => {
+            }
+
+            finally {
                 setSubmitting(false);
-            });
+            }
         }}
         >
             {({ isSubmitting }) => (
@@ -93,9 +99,10 @@ const LoginForm = () => {
                             Log in
                         </Button>
                         <Link 
-                        color={'blue.400'} 
+                        as={ReactLink}
+                        color={'blue.400'}
                         textAlign='center' 
-                        href='/signup'>
+                        to='/signup'>
                             Not signed up yet?
                         </Link>
                     </Stack>
