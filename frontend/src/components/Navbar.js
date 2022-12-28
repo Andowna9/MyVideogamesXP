@@ -19,19 +19,21 @@ useColorModeValue,
 MenuItem
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { NavLink as ReactNavLink, Link as ReactLink } from 'react-router-dom';
+import { NavLink as ReactNavLink, Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 import axios from '../api/axiosInstance';
 
 const NAV_ITEMS = [
     {
-        'label': 'Videogames',
-        'to': '/search/games'
+        label: 'Videogames',
+        to: '/search/games',
+        protected: false
     },
 
     {
-        'label': 'My list',
-        'to': '/my-list'
+        label: 'My list',
+        to: '/my-list',
+        protected: true
     }
 ]
 
@@ -39,6 +41,7 @@ const Navbar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
     const { user, setUser } = useUserContext();
+    const navigate = useNavigate();
     
     return (
         <Box px={4}>
@@ -58,9 +61,7 @@ const Navbar = () => {
                     as='nav' 
                     spacing={4}
                     display={{ base: 'none', md: 'flex' }}>
-                        {NAV_ITEMS.map((navItem, index) => (
-                            <NavLink key={index} to={navItem.to}>{navItem.label}</NavLink>
-                        ))}
+                        <NavLinkList user={user}/>
                     </HStack>
                 </HStack>
                 <HStack spacing={6}>
@@ -103,7 +104,7 @@ const Navbar = () => {
                                         axios.post('/accounts/auth/jwt/logout')
                                         .then((result) => {
                                             setUser(null);
-                                            // TODO redirect to public route
+                                            navigate('/');
                                         })
                                         .catch((error) => {
                                             console.log(error);
@@ -127,9 +128,7 @@ const Navbar = () => {
             {isOpen ? (
             <Box pb={4} display={{ md: 'none' }}>
                 <Stack as={'nav'} spacing={1}>
-                {NAV_ITEMS.map((navItem, index) => (
-                    <NavLink key={index} to={navItem.to}>{navItem.label}</NavLink>
-                ))}
+                <NavLinkList user={user}/>
                 </Stack>
             </Box>
             ) : null}
@@ -152,6 +151,15 @@ const NavLink = ({ to, children }) => {
             {children}
         </Link>
     );
+}
+
+const NavLinkList = ({user}) => {
+    return NAV_ITEMS.map((navItem, index) => {
+        if (!user && navItem.protected) {
+            return null;
+        }
+        return <NavLink key={index} to={navItem.to}>{navItem.label}</NavLink>;
+    });
 }
 
 export default Navbar;

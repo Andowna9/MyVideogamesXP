@@ -46,6 +46,7 @@ router.post('/search', async (req, res, next) => {
 router.get('/:id', authMiddleware({allowUnauthenticated: true}), listMiddleware(), async (req, res, next) => {
     const id = req.params.id;
     const userList = req.userList;
+    console.log('Userlist: ' + userList);
     try {
         const apiResponse = await apiClient
             .fields(['id', 'name', 'first_release_date', 'genres.name', 
@@ -57,7 +58,7 @@ router.get('/:id', authMiddleware({allowUnauthenticated: true}), listMiddleware(
 
         const data = apiResponse.data[0];
         data['inList'] = false;
-        if (userList != null) {
+        if (userList) {
             if (userList.videogames.find((videogame) => videogame.igdb_id == data.id)) {
                 data['inList'] = true;
             }

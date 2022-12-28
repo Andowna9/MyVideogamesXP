@@ -43,7 +43,7 @@ const LoginForm = () => {
 
                 const result = axios.get('/accounts/users/me');
                 setUser(result.data);
-                navigate('/my-list');
+                navigate('/');
             }
             catch(error) {
                 console.log(error.response);

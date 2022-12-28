@@ -38,26 +38,9 @@ const GameDetail = () => {
     const { id } = useParams();
     const { user } = useUserContext();
 
-    const [game, setGame] = useState();
+    const [game, setGame] = useState({});
     const [isLoading, setLoading] = useState(true);
     const addModal = useDisclosure();
-
-    let button;
-    if (game && game.inList) {
-        button =(<Button
-                    as={ReactLink}
-                    to='/my-list'
-                    colorScheme='green'>
-                        Check on list
-                </Button>);
-    }
-    else {
-        button =(<Button 
-                    colorScheme='blue'
-                    onClick={addModal.onOpen}>
-                        Add to list
-                </Button>);
-    }
 
     useEffect(() => {
         axios.get(`/videogames/igdb/${id}`)
@@ -84,6 +67,23 @@ const GameDetail = () => {
             color='blue.500' />
         </Flex>
     );
+
+    let button;
+    if (game.inList) {
+        button =(<Button
+                    as={ReactLink}
+                    to='/my-list'
+                    colorScheme='green'>
+                        Check on list
+                </Button>);
+    }
+    else {
+        button =(<Button 
+                    colorScheme='blue'
+                    onClick={addModal.onOpen}>
+                        Add to list
+                </Button>);
+    }
 
     return (
         <Box padding={10} pt='80px'>
