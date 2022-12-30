@@ -8,7 +8,7 @@ const Signup = () => {
         align='center'
         justify='center'
         >
-            <Box boxShadow='lg'>
+            <Box minWidth='400px' boxShadow='lg'>
                 <Stack spacing={4} py={8} px={12}>
                     <Heading textAlign='center'>Sign up</Heading>
                     <SignupForm />

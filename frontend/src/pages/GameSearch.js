@@ -13,15 +13,17 @@ Link
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import axios from '../api/axiosInstance';
 import GameCover from '../components/GameCover';
 
 const GameSearch = () => {
     const [games, setGames] = useState([]);
-    const [search, setSearch] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams({});
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
+      const search = searchParams.get('search');
       if (!search) {
         setLoading(false);
         setGames([]);
@@ -30,9 +32,9 @@ const GameSearch = () => {
 
       let ignore = false;
       setLoading(true);
-      axios.post('/videogames/igdb/search', {
-        search: search
-      })
+      axios.get('/videogames/igdb/search', 
+        { params: { search: search } }
+      )
       .then((result) => {
         if (!ignore) {
           setGames(result.data);
@@ -53,7 +55,7 @@ const GameSearch = () => {
       return () => {
         ignore = true;
       }
-    }, [search]);
+    }, [searchParams]);
 
     return (
       <>
@@ -63,7 +65,13 @@ const GameSearch = () => {
           pointerEvents='none'
           children={<SearchIcon />} 
           />
-          <Input placeholder='Search game' onChange={(e) => setSearch(e.target.value)}/>
+          <Input 
+          placeholder='Search game'
+          value={searchParams.get('search') || ''} 
+          onChange={(event) => {
+            const val = event.target.value;
+            setSearchParams(val ? { search: val } : {});
+          }}/>
         </InputGroup>
       </Box>
       <Box padding={8}>

@@ -1,6 +1,6 @@
-import { Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, useToast } from '@chakra-ui/react';
+import { Stack, FormControl, FormLabel, Input, Link, Button, FormErrorMessage, useToast } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import axios from '../api/axiosInstance';
 
 const SignupForm = () => {
@@ -93,7 +93,7 @@ const SignupForm = () => {
                             )}
                         </Field>
                     </Stack>
-                    <Stack pt={2}>
+                    <Stack spacing={8} pt={2}>
                         <Button
                         mt={4}
                         colorScheme='blue'
@@ -102,6 +102,13 @@ const SignupForm = () => {
                         >
                             Sign up
                         </Button>
+                        <Link 
+                        as={ReactLink}
+                        color={'blue.400'}
+                        textAlign='center' 
+                        to='/login'>
+                            Already a user?
+                        </Link>
                     </Stack>
                 </Form>
             )}

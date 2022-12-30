@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI
 
 from src.db import User, create_db_and_tables
 from src.schemas import UserCreate, UserRead, UserUpdate
-from src.users import auth_backend, fastapi_users, google_oauth_client, current_active_user
+from src.users import auth_backend, google_auth_backend, fastapi_users, google_oauth_client, current_active_user
 
 from src.config import APP_SECRET
 
@@ -33,8 +33,9 @@ app.include_router(
 app.include_router(
     fastapi_users.get_oauth_router(
         google_oauth_client,
-        auth_backend,
+        google_auth_backend,
         APP_SECRET,
+        redirect_url="http://localhost/api/accounts/auth/google/callback",
         associate_by_email=True,
     ),
     prefix="/auth/google",

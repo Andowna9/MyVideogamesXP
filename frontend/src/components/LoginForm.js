@@ -98,6 +98,19 @@ const LoginForm = () => {
                         >
                             Log in
                         </Button>
+                        <Button
+                        onClick={() => {
+                            axios.get('/accounts/auth/google/authorize')
+                            .then((result) => {
+                                const authURL = result.data['authorization_url'];
+                                window.open(authURL, '_self');
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                        }}>
+                            Log in with Google
+                        </Button>
                         <Link 
                         as={ReactLink}
                         color={'blue.400'}

@@ -18,7 +18,9 @@ const GameItem = ({ igdbId, status, progress, score, onEdit, onDelete }) => {
     const deleteAlert = useDisclosure();
 
     useEffect(() => {
-        axios.get(`/videogames/igdb/${igdbId}`)
+        axios.get(`/videogames/igdb/${igdbId}`,
+        { params: {cover_size: 'small'} }
+        )
         .then((result) => {
             setIgdbData(result.data);
         })

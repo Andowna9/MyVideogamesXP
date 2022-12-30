@@ -22,9 +22,9 @@ const processCover = (games, size) => {
     });
 }
 
-// Search 
-router.post('/search', async (req, res, next) => {
-    const searchText = req.body.search;
+// Search
+router.get('/search', async (req, res, next) => {
+    const searchText = req.query.search;
     if (!searchText) return res.sendStatus(400);
     
     try {
@@ -46,7 +46,8 @@ router.post('/search', async (req, res, next) => {
 router.get('/:id', authMiddleware({allowUnauthenticated: true}), listMiddleware(), async (req, res, next) => {
     const id = req.params.id;
     const userList = req.userList;
-    console.log('Userlist: ' + userList);
+    const coverSize = req.query.cover_size || 'big';
+
     try {
         const apiResponse = await apiClient
             .fields(['id', 'name', 'first_release_date', 'genres.name', 
@@ -54,7 +55,7 @@ router.get('/:id', authMiddleware({allowUnauthenticated: true}), listMiddleware(
             .where(`id = ${id}`)
             .request('/games');
 
-        processCover(apiResponse.data, sizes.big);
+        processCover(apiResponse.data, sizes[coverSize]);
 
         const data = apiResponse.data[0];
         data['inList'] = false;

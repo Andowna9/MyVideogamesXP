@@ -8,6 +8,8 @@ from fastapi_users.authentication import (
     CookieTransport,
     JWTStrategy
 )
+from src.transport import AutoRedirectCookieTransport
+
 from fastapi_users.db import SQLAlchemyUserDatabase
 from httpx_oauth.clients.google import GoogleOAuth2
 
@@ -41,7 +43,9 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
     yield UserManager(user_db)
 
 
-cookie_transport = CookieTransport(cookie_name="session", cookie_max_age=3600)
+cookie_values = {"cookie_name": "session", "cookie_max_age": 3600}
+cookie_transport = CookieTransport(**cookie_values)
+autoredirect_cookie_transport = AutoRedirectCookieTransport(**cookie_values)
 
 
 def get_jwt_strategy() -> JWTStrategy:
@@ -52,6 +56,12 @@ auth_backend = AuthenticationBackend(
     name="jwt",
     transport=cookie_transport,
     get_strategy=get_jwt_strategy,
+)
+
+google_auth_backend = AuthenticationBackend(
+    name="jwt-google",
+    transport=autoredirect_cookie_transport,
+    get_strategy=get_jwt_strategy
 )
 
 fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_backend])

@@ -66,7 +66,7 @@ const AppRoutes = () => {
                     <Route path='/' element={<Navigate to='/search/games'/>} />
                     <Route path='/signup' element={<Signup />} />
                     <Route path='/login' element={<Login />} />
-                    <Route path='/search/games' element={<GameSearch />} />
+                    <Route path='/search/games/*' element={<GameSearch />} />
                     <Route path='/games/:id' element={<GameDetail />} />
                     <Route 
                     path='/my-list' 
