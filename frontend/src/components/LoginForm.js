@@ -1,4 +1,16 @@
-import { Stack, FormControl, FormLabel, Input, Button, FormErrorMessage, Link, useToast } from '@chakra-ui/react';
+import { 
+Stack, 
+FormControl, 
+FormLabel, 
+Input, 
+Button, 
+FormErrorMessage, 
+Link,
+Center,
+Text,
+useToast 
+} from '@chakra-ui/react';
+import { FcGoogle } from 'react-icons/fc';
 import {Field, Form, Formik} from 'formik';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
@@ -90,27 +102,37 @@ const LoginForm = () => {
                     </Stack>
 
                     <Stack spacing={8} pt={2}>
-                        <Button
-                        mt={4}
-                        colorScheme='blue'
-                        isLoading={isSubmitting}
-                        type='submit'
-                        >
-                            Log in
-                        </Button>
-                        <Button
-                        onClick={() => {
-                            axios.get('/accounts/auth/google/authorize')
-                            .then((result) => {
-                                const authURL = result.data['authorization_url'];
-                                window.open(authURL, '_self');
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-                        }}>
-                            Log in with Google
-                        </Button>
+                        <Stack>
+                            <Button
+                            mt={4}
+                            colorScheme='blue'
+                            isLoading={isSubmitting}
+                            type='submit'
+                            >
+                                Log in
+                            </Button>
+                            <Center>
+                                <Text as='b'>Or</Text>
+                            </Center>
+                            <Button
+                            w='full'
+                            variant='outline'
+                            leftIcon={<FcGoogle />}
+                            onClick={() => {
+                                axios.get('/accounts/auth/google/authorize')
+                                .then((result) => {
+                                    const authURL = result.data['authorization_url'];
+                                    window.open(authURL, '_self');
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                            }}>
+                                <Center>
+                                    <Text>Log in with Google</Text>
+                                </Center>
+                            </Button>
+                        </Stack>
                         <Link 
                         as={ReactLink}
                         color={'blue.400'}
