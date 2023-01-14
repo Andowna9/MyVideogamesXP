@@ -9,30 +9,22 @@ services:
       - MARIADB_ROOT_PASSWORD=p132
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pp132"] # Check if database is healthy
-    profiles:
-      - backend
 
   mongo:
     image: mongo
     environment:
       - MONGO_INITDB_DATABASE=videogames_lists
-    profiles:
-      - backend
 
   users-api:
     build: ./users-backend
     depends_on:
       mariadb:
         condition: service_healthy
-    profiles:
-      - backend
 
   videogames-api:
     build: ./videogames-backend
     depends_on:
       - mongo
-    profiles:
-      - backend
 
   gateway:
     build: ./gateway
@@ -41,8 +33,6 @@ services:
     depends_on:
       - users-api
       - videogames-api
-    profiles:
-      - backend
 
   web:
     build: ./frontend
