@@ -1,11 +1,11 @@
 const express = require('express');
-const { client_id, api_token } = require('../config');
+const { twitch_oauth_client_id, twitch_oauth_acess_token } = require('../config');
 const igdb = require('igdb-api-node').default;
 
 const authMiddleware = require('../middleware/authMiddleware');
 const listMiddleware = require('../middleware/listMiddleware');
 
-const apiClient = igdb(client_id, api_token);
+const apiClient = igdb(twitch_oauth_client_id, twitch_oauth_acess_token);
 const router = express.Router();
 
 sizes = {

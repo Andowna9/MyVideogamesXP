@@ -4,6 +4,6 @@ module.exports = {
     port: process.env.PORT || 5000,
     app_secret: process.env.APP_SECRET,
     mongodb_uri: process.env.MONGODB_URI,
-    client_id: process.env.CLIENT_ID,
-    api_token: process.env.API_TOKEN
+    twitch_oauth_client_id: process.env.TWITCH_OAUTH_CLIENT_ID,
+    twitch_oauth_acess_token: process.env.TWITCH_OAUTH_ACCESS_TOKEN
 };
