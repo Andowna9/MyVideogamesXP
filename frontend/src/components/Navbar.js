@@ -93,7 +93,7 @@ const Navbar = () => {
                                         />
                                     </Center>
                                     <br />
-                                    <Center>
+                                    <Center padding={3}>
                                         <Text as='b'>
                                             {user.email}
                                         </Text>

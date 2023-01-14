@@ -1,7 +1,3 @@
-import {
-CircularProgress,
-Flex
-} from '@chakra-ui/react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 import { useEffect, useState } from 'react';
@@ -46,17 +42,7 @@ const AppRoutes = () => {
     }, [user, setUser]);
 
     if (isLoading) {
-        return (
-            <Flex 
-            align='center' 
-            justify='center'
-            minH='80vh'>
-                <CircularProgress 
-                size='60px'
-                isIndeterminate 
-                color='blue.500' />
-            </Flex>
-        );
+        return;
     }
 
     return (

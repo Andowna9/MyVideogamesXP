@@ -7,12 +7,22 @@ import GameItem from './GameItem';
 
 const GameList = ({ games, editGameItem, removeGameItem }) => {
 
+    if (games.length === 0) {
+        return (
+            <Box padding={8}>
+                <Text textAlign='center'>
+                    No games added with this status
+                </Text>
+            </Box>
+        );
+    }
+
     return (
         <Box padding={8} boxShadow='lg'>
             <Flex
             justify='space-evenly'
             align='center'
-            display={{base: 'none', md: 'flex'}}>
+            display={{base: 'none', lg: 'flex'}}>
                 <Box flex='1 1 20%'>
                     <Text as='b'>
                         Cover
