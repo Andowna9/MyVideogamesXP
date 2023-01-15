@@ -49,7 +49,7 @@ autoredirect_cookie_transport = AutoRedirectCookieTransport(**cookie_props)
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=APP_SECRET, lifetime_seconds=604800)
+    return JWTStrategy(secret=APP_SECRET, lifetime_seconds=3600)
 
 
 auth_backend = AuthenticationBackend(
