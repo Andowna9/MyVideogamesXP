@@ -9,7 +9,6 @@ from fastapi_users.db import (
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy import Column, String
 
 from src.config import DATABASE_URL
 
@@ -19,7 +18,6 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
     pass
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    # username = Column(String(length=100), index=True, nullable=True)
     oauth_accounts: List[OAuthAccount] = relationship("OAuthAccount", lazy="joined")
 
 

@@ -43,9 +43,9 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
     yield UserManager(user_db)
 
 
-cookie_values = {"cookie_name": "session", "cookie_max_age": 3600}
-cookie_transport = CookieTransport(**cookie_values)
-autoredirect_cookie_transport = AutoRedirectCookieTransport(**cookie_values)
+cookie_props = {"cookie_name": "session", "cookie_max_age": 3600}
+cookie_transport = CookieTransport(**cookie_props)
+autoredirect_cookie_transport = AutoRedirectCookieTransport(**cookie_props)
 
 
 def get_jwt_strategy() -> JWTStrategy:

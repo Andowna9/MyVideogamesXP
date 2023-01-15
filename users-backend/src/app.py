@@ -1,8 +1,8 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
-from src.db import User, create_db_and_tables
+from src.db import create_db_and_tables
 from src.schemas import UserCreate, UserRead, UserUpdate
-from src.users import auth_backend, google_auth_backend, fastapi_users, google_oauth_client, current_active_user
+from src.users import auth_backend, google_auth_backend, fastapi_users, google_oauth_client
 
 from src.config import APP_SECRET
 
@@ -41,11 +41,6 @@ app.include_router(
     prefix="/auth/google",
     tags=["auth"],
 )
-
-# Example of a route requiring auth
-@app.get("/authenticated-route")
-async def authenticated_route(user: User = Depends(current_active_user)):
-    return {"message": f"Hello {user.email}!"}
 
 @app.on_event("startup")
 async def on_startup():
