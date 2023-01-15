@@ -92,7 +92,8 @@ const GameDetail = () => {
                     <Stack spacing={2}>
                         <GameCover
                         src={game.cover_image}
-                        alt={game.name}/>
+                        width='264px'
+                        />
                         { user && button}
                     </Stack>
                 </WrapItem>

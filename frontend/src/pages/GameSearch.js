@@ -4,7 +4,6 @@ Flex,
 CircularProgress,
 Stack,
 Box,
-AspectRatio,
 Text,
 Input,
 InputGroup,
@@ -92,12 +91,10 @@ const GameSearch = () => {
                 <Flex key={game.id} justify='center'>
                   <Stack spacing={2} textAlign='center'>
                     <Link href={`/games/${game.id}`}>
-                      <AspectRatio maxW='200px' ratio={3 / 4}>
-                        <GameCover 
-                        src={game.cover_image}
-                        alt={game.name}
-                        />
-                      </AspectRatio>
+                      <GameCover 
+                      src={game.cover_image}
+                      maxW='200px'
+                      /> 
                     </Link>
                     <Text width='200px'>
                       {game.name}

@@ -1,7 +1,8 @@
 import {
 Flex,
 Box,
-Text
+Text,
+VStack
 } from '@chakra-ui/react';
 import GameItem from './GameItem';
 
@@ -46,7 +47,9 @@ const GameList = ({ games, editGameItem, removeGameItem }) => {
                 <Box flex='1 1 20%'>
                 </Box>
             </Flex>
-            <Box>
+            <VStack
+            spacing={8}
+            align='stretch'>
                 { 
                     games && games.map((game, index) => {
                         return <GameItem 
@@ -61,7 +64,7 @@ const GameList = ({ games, editGameItem, removeGameItem }) => {
                                 />
                     }) 
                 }
-            </Box>
+            </VStack>
         </Box>
     );
 
