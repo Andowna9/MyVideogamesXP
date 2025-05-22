@@ -17,14 +17,19 @@ of titles by means of [IGDB API](https://www.igdb.com/api) owned by Twitch.
 
 ## Architecture
 
+The frontend is run as an Single Page Application (SPA) on the user's browser and accesses each of the microservices functionalities through a unified REST API.
+
 ![Architecture](images/architecture.PNG)
 
 
 ## Features
 
 - 🔐 Log in using Google or user/email combination.
-  
-![Login](images/login.png)
+
+<p align="center">
+  <img src="images/login.png" width="200" />
+</p>
+
 
 - 🔍 Search a huge catalog of games via IGDB.
   
@@ -41,7 +46,7 @@ of titles by means of [IGDB API](https://www.igdb.com/api) owned by Twitch.
 
 - 🛠️ Manage your list comfortably editing and removing game entries.
   
-![Login](images/responsive.PNG)
+![Login](images/game_list.PNG)
 
 ## Getting Started
 
@@ -53,10 +58,10 @@ Follow these steps to set up the application locally.
 
 ### Configuring Environment Variables
 
-Before running the application, ensure you’ve created and properly configured the required `.env`. The repository includes sample `.env` files to guide you inside the following folders:
-- [frontend](./frontend/)
-- [users-backend](./users-backend/)
-- [videogames-backend](./videogames-backend/)
+Before running the application, ensure you’ve created and properly configured the required `.env`. The repository includes sample `.env` files to guide you:
+- [frontend](./frontend/.env.sample)
+- [users-backend](./users-backend/.env.sample)
+- [videogames-backend](./videogames-backend/.env.sample)
 
 Some essential credentials you’ll need:
 
