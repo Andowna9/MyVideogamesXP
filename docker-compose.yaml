@@ -8,7 +8,7 @@ services:
       - MARIADB_PASSWORD=test
       - MARIADB_ROOT_PASSWORD=p132
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pp132"] # Check if database is healthy
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-uroot", "-pp132"] # Check if database is healthy
 
   mongo:
     image: mongo
