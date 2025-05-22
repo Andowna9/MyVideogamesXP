@@ -61,7 +61,7 @@ const ItemModal = ({ headerTitle, onAction, actionName, isOpen, onClose, idField
                     <VStack spacing={2}>
                         <FormControl>
                             <FormLabel>Status:</FormLabel>
-                            <Select placeholder='Select status'
+                            <Select
                             name='status'
                             value={formik.values.status}
                             onChange={formik.handleChange}>

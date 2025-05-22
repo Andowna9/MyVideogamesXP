@@ -19,7 +19,7 @@ const GameList = ({ games, editGameItem, removeGameItem }) => {
     }
 
     return (
-        <Box padding={8} boxShadow='lg'>
+        <Box padding={8}>
             <Flex
             justify='space-evenly'
             align='center'
@@ -47,8 +47,9 @@ const GameList = ({ games, editGameItem, removeGameItem }) => {
                 <Box flex='1 1 20%'>
                 </Box>
             </Flex>
-            <VStack
-            spacing={8}
+            <Flex
+            direction='column'
+            gap={8}
             align='stretch'>
                 { 
                     games && games.map((game, index) => {
@@ -64,7 +65,7 @@ const GameList = ({ games, editGameItem, removeGameItem }) => {
                                 />
                     }) 
                 }
-            </VStack>
+            </Flex>
         </Box>
     );
 

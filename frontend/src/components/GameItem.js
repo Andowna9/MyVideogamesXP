@@ -77,8 +77,8 @@ const DesktopGameItem = ({ igdbData, progress, score, openEdit, openDelete }) =>
                 />
             </Box>
             <Box flex='1 1 40%'>{igdbData.name}</Box>
-            <Box flex='1 1 10%'>{progress && progress.toString() + '%'}</Box>
-            <Box flex='1 1 10%'>{score || 'N/A'}</Box>
+            <Box flex='1 1 10%'>{progress.toString() + '%'}</Box>
+            <Box flex='1 1 10%'>{score != null ? score.toString() + '/10' : 'N/A'}</Box>
             <Box flex='1 1 20%'>
                 <HStack>
                     <Button
@@ -119,12 +119,12 @@ const MobileGameItem = ({ igdbData, progress, score, openEdit, openDelete }) => 
                     <Flex
                     gap={3}>
                         <Text as='b'>Progress:</Text>
-                        <Text>{progress && progress.toString() + '%'}</Text>
+                        <Text>{progress.toString() + '%'}</Text>
                     </Flex>
                     <Flex
                     gap={3}>
                         <Text as='b'>Score:</Text>
-                        <Text>{score}</Text>
+                        <Text>{score != null ? score.toString() + '/10' : 'N/A'}</Text>
                     </Flex>
                 </Flex>
             </Flex>

@@ -81,7 +81,7 @@ const Navbar = () => {
                                 minW={0}>
                                     <Avatar
                                     size='sm'
-                                    src={`https://avatars.dicebear.com/api/initials/${user.email}.svg`}
+                                    src={`https://api.dicebear.com/9.x/initials/svg?seed=${user.email}`}
                                     />
                                 </MenuButton>
                                 <MenuList alignItems='center'>
@@ -89,7 +89,7 @@ const Navbar = () => {
                                     <Center>
                                         <Avatar
                                         size='2xl'
-                                        src={`https://avatars.dicebear.com/api/initials/${user.email}.svg`}
+                                        src={`https://api.dicebear.com/9.x/initials/svg?seed=${user.email}`}
                                         />
                                     </Center>
                                     <br />
@@ -137,17 +137,21 @@ const Navbar = () => {
 };
 
 const NavLink = ({ to, children }) => {
+    const backgroundColor = useColorModeValue('gray.200', 'gray.700');
+
     return (
         <Link
         as={ReactNavLink}
         px={2}
         py={1}
+        to={to}
         rounded='md'
         _hover={{
             textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
+            bg: backgroundColor,
           }}
-        to={to}>
+        _activeLink={{ bg: backgroundColor }}
+        >
             {children}
         </Link>
     );

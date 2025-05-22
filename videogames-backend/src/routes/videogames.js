@@ -8,9 +8,10 @@ const listMiddleware = require('../middleware/listMiddleware');
 const apiClient = igdb(twitch_oauth_client_id, twitch_oauth_acess_token);
 const router = express.Router();
 
+// Sizes: https://api-docs.igdb.com/#images
 sizes = {
-    small: 'cover_small',
-    big: 'cover_big'
+    small: 'cover_big',
+    big: '720p'
 }
 const processCover = (games, size) => {
     games.forEach(game => {

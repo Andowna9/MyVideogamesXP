@@ -58,7 +58,7 @@ const GameSearch = () => {
 
     return (
       <>
-      <Box padding={8}>
+      <Box paddingX={8} paddingY={4}>
         <InputGroup>
           <InputLeftElement 
           pointerEvents='none'
@@ -73,7 +73,7 @@ const GameSearch = () => {
           }}/>
         </InputGroup>
       </Box>
-      <Box padding={8}>
+      <Box paddingX={8} paddingY={4}>
         { isLoading? 
            <Flex 
            align='center' 
@@ -89,14 +89,14 @@ const GameSearch = () => {
               games.map((game) => {
                 return (
                 <Flex key={game.id} justify='center'>
-                  <Stack spacing={2} textAlign='center'>
+                  <Stack width='200px' align='center' spacing={2}>
                     <Link href={`/games/${game.id}`}>
                       <GameCover 
                       src={game.cover_image}
-                      maxW='200px'
+                      width='180px'
                       /> 
                     </Link>
-                    <Text width='200px'>
+                    <Text textAlign='center' noOfLines={2}>
                       {game.name}
                     </Text>
                   </Stack>
