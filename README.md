@@ -27,7 +27,7 @@ The frontend is run as an Single Page Application (SPA) on the user's browser an
 - 🔐 Log in using Google or user/email combination.
 
 <p align="center">
-  <img src="images/login.png" width="200" />
+  <img src="images/login.png" width="500px" />
 </p>
 
 
@@ -79,6 +79,8 @@ docker compose --profile frontend up -d
 
 
 ## API Endpoints
+
+Check the following tables for further understanding of the available API endpoints per microservice.
 
 ### 🧑 User Accounts – `/api/accounts`
 
