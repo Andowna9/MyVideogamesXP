@@ -27,7 +27,7 @@ The frontend is run as an Single Page Application (SPA) on the user's browser an
 - 🔐 Log in using Google or user/email combination.
 
 <p align="center">
-  <img src="images/login.png" width="500px" />
+  <img src="images/login.png" width="400px" />
 </p>
 
 
@@ -105,5 +105,7 @@ Check the following tables for further understanding of the available API endpoi
 | `/my-games/<id>` | PUT    | Update tracking data of a specific game. |
 | `/my-games/<id>` | DELETE | Delete a game from your list.            |
 
+## License
 
+Distributed under the MIT License. See [License](LICENSE).
 
